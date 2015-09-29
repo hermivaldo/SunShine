@@ -2,10 +2,10 @@ package app.com.hermivaldo.sunshine;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -23,6 +23,8 @@ import java.util.List;
  */
 public class MainActivityFragment extends Fragment {
 
+    public static ArrayAdapter adapter;
+
     public MainActivityFragment() {
         // Set that Fragment can use MenuOptions.
         setHasOptionsMenu(true);
@@ -32,6 +34,21 @@ public class MainActivityFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Inflate the MenuOptions with the layout menu
         inflater.inflate(R.menu.forecastfragment, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Get element ID
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.refresh){
+            // Make request in Webservice.
+            new MakeRequestHttp().execute(new String[]{"Guarulhos","7","imperial"});
+            // Finalize execute
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -63,7 +80,7 @@ public class MainActivityFragment extends Fragment {
         ListView myList = (ListView) myView.findViewById(R.id.listview_forecast);
 
         // Create the adapter adapter
-        ArrayAdapter adapter = new ArrayAdapter(
+        adapter = new ArrayAdapter(
                 // The current context
                 getActivity(),
                 // Id of list item layout
@@ -75,9 +92,6 @@ public class MainActivityFragment extends Fragment {
 
         // Set data inside the list
         myList.setAdapter(adapter);
-
-        // Call the WebApi.
-        new MakeRequestHttp().execute();
 
         return myView;
     }
