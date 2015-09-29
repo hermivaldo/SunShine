@@ -2,7 +2,10 @@ package app.com.hermivaldo.sunshine;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -21,6 +24,14 @@ import java.util.List;
 public class MainActivityFragment extends Fragment {
 
     public MainActivityFragment() {
+        // Set that Fragment can use MenuOptions.
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate the MenuOptions with the layout menu
+        inflater.inflate(R.menu.forecastfragment, menu);
     }
 
     @Override
@@ -40,6 +51,10 @@ public class MainActivityFragment extends Fragment {
                 "Sat - Sunny - 86 / 68"
         };
 
+        /*
+         * URL para busca da temperatura em guarulhos.
+         * http://api.openweathermap.org/data/2.5/forecast/daily?q=Guarulhos&cnt=7&mode=json
+         */
 
         List<String> lista = new ArrayList<>(
                 Arrays.asList(data));
@@ -60,6 +75,9 @@ public class MainActivityFragment extends Fragment {
 
         // Set data inside the list
         myList.setAdapter(adapter);
+
+        // Call the WebApi.
+        new MakeRequestHttp().execute();
 
         return myView;
     }
