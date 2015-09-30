@@ -1,9 +1,9 @@
 package app.com.hermivaldo.sunshine;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.text.format.Time;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,13 +13,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+
+import app.com.hermivaldo.sunshine.custom_adapters.CustomListAdapter;
 
 /**
  * @author Hermivaldo Braga
@@ -31,6 +30,10 @@ public class MakeRequestHttp extends AsyncTask<String, Void, String[]>{
 
     HttpURLConnection urlConnection = null;
     BufferedReader reader = null;
+    Context myContext;
+    public MakeRequestHttp(Context myContext){
+        this.myContext = myContext;
+    }
 
     /**
      *
@@ -127,27 +130,26 @@ public class MakeRequestHttp extends AsyncTask<String, Void, String[]>{
             String description;
             String highAndLow;
 
+            // Data para calendário
             JSONObject dayForecast = weatherArray.getJSONObject(i);
-
-
             long dateTime;
             dateTime = dayTime.setJulianDay(julianStartDay + i);
             day = getReadableDateString(dateTime);
 
-
+            // Descrição sobre o clima
             JSONObject weaterObjet = dayForecast.getJSONArray(OWN_WEATHER).getJSONObject(0);
             description = weaterObjet.getString(OWN_DESCRIPTION);
 
+            // Maior e menor temperatura
             JSONObject temJsonObject = dayForecast.getJSONObject(OWN_TEMPERATURE);
             double high = temJsonObject.getDouble(OWN_MAX);
             double low = temJsonObject.getDouble(OWN_MIN);
-
             highAndLow = formatHighLows(high,low);
 
+            // Montagem do conteúdo para exibição.
             results[i] = day + " - " + description + " - " + highAndLow;
-
         }
-
+        // Exibição de conteúdo carregado no Log
         for(String s : results){
             Log.v(this.getClass().getSimpleName(), s);
         }
@@ -167,10 +169,9 @@ public class MakeRequestHttp extends AsyncTask<String, Void, String[]>{
         return highLowStr;
     }
 
-    /**
+    /*
     * Formatar a data do calendário que será exibido.
     * */
-
     private String getReadableDateString(long time){
         SimpleDateFormat shotDate = new SimpleDateFormat("EEE MMM dd");
         return shotDate.format(time);
@@ -181,11 +182,9 @@ public class MakeRequestHttp extends AsyncTask<String, Void, String[]>{
         /*
          * Atualizar o conteúdo somente se não nulo */
         if (s != null){
-            MainActivityFragment.adapter.clear();
-            // A utilização do Add requer que os itens sejam adicionados um a um
-            for (String valor : s){
-                MainActivityFragment.adapter.add(valor);
-            }
+           MainActivityFragment.myList.setAdapter(
+                   new CustomListAdapter(Arrays.asList(s), myContext));
+
         }
 
     }

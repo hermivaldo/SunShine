@@ -1,19 +1,20 @@
 package app.com.hermivaldo.sunshine;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import app.com.hermivaldo.sunshine.custom_adapters.CustomListAdapter;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -23,8 +24,7 @@ import java.util.List;
  */
 public class MainActivityFragment extends Fragment {
 
-    public static ArrayAdapter adapter;
-
+    public static ListView myList;
     public MainActivityFragment() {
         // Set that Fragment can use MenuOptions.
         setHasOptionsMenu(true);
@@ -43,7 +43,7 @@ public class MainActivityFragment extends Fragment {
 
         if (itemId == R.id.refresh){
             // Make request in Webservice.
-            new MakeRequestHttp().execute(new String[]{"Guarulhos","7","imperial"});
+            new MakeRequestHttp(getActivity()).execute(new String[]{"Guarulhos","7","imperial"});
             // Finalize execute
             return true;
         }
@@ -77,21 +77,10 @@ public class MainActivityFragment extends Fragment {
                 Arrays.asList(data));
 
         // Get element List inside the my layout.
-        ListView myList = (ListView) myView.findViewById(R.id.listview_forecast);
-
-        // Create the adapter adapter
-        adapter = new ArrayAdapter(
-                // The current context
-                getActivity(),
-                // Id of list item layout
-                R.layout.list_item_forecast,
-                // Id of textview to populate
-                R.id.list_item_forecast_textview
-                // data
-                ,lista);
+        myList = (ListView) myView.findViewById(R.id.listview_forecast);
 
         // Set data inside the list
-        myList.setAdapter(adapter);
+        myList.setAdapter(new CustomListAdapter(lista,getActivity()));
 
         return myView;
     }
