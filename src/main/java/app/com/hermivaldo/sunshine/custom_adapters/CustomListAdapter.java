@@ -83,6 +83,9 @@ public class CustomListAdapter extends BaseAdapter implements AdapterView.OnItem
      */
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        this.myContext.startActivity(new Intent(view.getContext(), DetailActivity.class));
+        Intent intent = new Intent(view.getContext(), DetailActivity.class);
+        // Definir valor que será passado para a outra Act.
+        intent.putExtra(Intent.EXTRA_TEXT,myList.get(position));
+        this.myContext.startActivity(intent);
     }
 }

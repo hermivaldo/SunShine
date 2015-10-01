@@ -2,4 +2,6 @@
     <string name="app_name">Sunshine</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="default_location">Guarulhos</string>
+    <string name="default_location_key">location</string>
 </resources>

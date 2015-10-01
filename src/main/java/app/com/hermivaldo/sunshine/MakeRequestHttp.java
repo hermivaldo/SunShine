@@ -78,7 +78,11 @@ public class MakeRequestHttp extends AsyncTask<String, Void, String[]>{
             forecasJsonStr = buffer.toString();
 
         } catch (Exception e){
-            Log.e(MakeRequestHttp.class.getSimpleName(),e.toString());
+           /*
+            * Removido pois não existe mais a necessidade de imprimir os valores que estão
+            * entrando na consulta.
+            */
+           // Log.e(MakeRequestHttp.class.getSimpleName(),e.toString());
         }finally {
             if (urlConnection != null){
                 urlConnection.disconnect();
@@ -149,10 +153,7 @@ public class MakeRequestHttp extends AsyncTask<String, Void, String[]>{
             // Montagem do conteúdo para exibição.
             results[i] = day + " - " + description + " - " + highAndLow;
         }
-        // Exibição de conteúdo carregado no Log
-        for(String s : results){
-            Log.v(this.getClass().getSimpleName(), s);
-        }
+
 
         return results;
     }

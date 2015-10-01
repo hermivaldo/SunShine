@@ -3,30 +3,41 @@
     package="app.com.hermivaldo.sunshine" >
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity
-            android:name=".MainActivity"
+
+        <activity android:name=".MainActivity"
             android:label="@string/app_name" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity
-            android:parentActivityName=".MainActivity"
+
+        <activity android:parentActivityName=".MainActivity"
             android:name=".DetailActivity">
+
             <meta-data
                 android:name="android.suport.PARENT_ACTIVITY"
-                android:value=".MainActivity"
-                >
+                android:value=".MainActivity">
+            </meta-data>
 
+        </activity>
+
+        <activity android:name=".preferrences.PreferrencesAct"
+            android:parentActivityName=".DetailActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DetailActivity">
             </meta-data>
         </activity>
+
     </application>
 
 </manifest>
