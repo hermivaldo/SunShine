@@ -22,6 +22,7 @@ public class PreferrencesAct extends PreferenceActivity implements
         addPreferencesFromResource(R.xml.preferences_config);
 
         bindPreferencesSummerToValue(findPreference("location"));
+        bindPreferencesSummerToValue(findPreference(getString(R.string.pref_units_key)));
     }
 
     private void bindPreferencesSummerToValue(Preference preference){

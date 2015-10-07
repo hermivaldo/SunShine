@@ -53,11 +53,15 @@ public class MainActivityFragment extends Fragment {
         MakeRequestHttp weatherTask = new MakeRequestHttp(getActivity());
 
         // Carregar as informações que foram salvas no aplicativo.
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences prefs = PreferenceManager.
+                getDefaultSharedPreferences(getActivity());
+
         String location = prefs.getString(getString(R.string.default_location_key),
                 getString(R.string.default_location));
+        String unit = prefs.getString(getString(R.string.pref_units_key),
+                getString(R.string.pref_units_metric));
 
-        weatherTask.execute(location,"7","imperial");
+        weatherTask.execute(location, "7", unit);
     }
 
     @Override

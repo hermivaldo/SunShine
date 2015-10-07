@@ -1,7 +1,9 @@
 package app.com.hermivaldo.sunshine;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.text.format.Time;
 import android.util.Log;
 
@@ -162,6 +164,20 @@ public class MakeRequestHttp extends AsyncTask<String, Void, String[]>{
      * Formatar a temperatura máxima e mínima que serão exibidos na aplicação.
      */
     private String formatHighLows(double high, double low){
+
+        /*
+         * Pegar o tipo específico de temperatura para poder realizar
+         * uma conversão para Celcius.
+         */
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(myContext);
+        String unit = sharedPref.getString(myContext.getString(R.string.pref_units_key),
+                myContext.getString(R.string.pref_units_metric));
+
+        if (unit.equals(myContext.getString(R.string.pref_units_imperial))){
+            high = (high * 1.8) + 32;
+            low = (low * 1.8) + 32;
+        }
+
         long roundedHiht = Math.round(high);
         long roundedLow = Math.round(low);
 
